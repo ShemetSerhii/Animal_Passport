@@ -1,5 +1,6 @@
 using AnimalPassport.BusinessLogic.DependencyInjection;
 using AnimalPassport.WebApi.Auth;
+using AnimalPassport.WebApi.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,9 +25,19 @@ namespace AnimalPassport.WebApi
             services.AddBusinessLogicComponents();
             services.AddScoped<IAuthService, AuthService>();
             services.AddControllers();
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
         }
 
@@ -42,10 +53,7 @@ namespace AnimalPassport.WebApi
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors("CorsPolicy");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -54,10 +62,10 @@ namespace AnimalPassport.WebApi
                 c.RoutePrefix = string.Empty;
             });
 
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<RemoteAccessHub>("/remote-access");
             });
         }
     }

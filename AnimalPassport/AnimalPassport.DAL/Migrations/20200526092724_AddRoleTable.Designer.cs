@@ -4,14 +4,16 @@ using AnimalPassport.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnimalPassport.DataAccess.Migrations
 {
     [DbContext(typeof(AnimalPassportDbContext))]
-    partial class AnimalPassportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200526092724_AddRoleTable")]
+    partial class AddRoleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,23 +111,6 @@ namespace AnimalPassport.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("001c1374-77ad-4c32-a0fd-3409d327322c"),
-                            Name = "Власник домашньої тварини"
-                        },
-                        new
-                        {
-                            Id = new Guid("3af641ec-b0c4-4eef-a939-d19b2e6adffb"),
-                            Name = "Ветеринар"
-                        },
-                        new
-                        {
-                            Id = new Guid("524e28e1-a8ff-4120-8bc8-a2773ee4247d"),
-                            Name = "Член контрольних органів"
-                        });
                 });
 
             modelBuilder.Entity("AnimalPassport.Entities.Entities.User", b =>

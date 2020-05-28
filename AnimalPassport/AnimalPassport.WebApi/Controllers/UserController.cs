@@ -43,5 +43,14 @@ namespace AnimalPassport.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("Roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            var roles = await _userManager.GetRolesAsync();
+
+            return Ok(roles);
+        }
     }
 }

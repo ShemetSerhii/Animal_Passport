@@ -4,14 +4,16 @@ using AnimalPassport.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnimalPassport.DataAccess.Migrations
 {
     [DbContext(typeof(AnimalPassportDbContext))]
-    partial class AnimalPassportDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200526103941_Seed")]
+    partial class Seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

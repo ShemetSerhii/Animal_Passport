@@ -5,8 +5,10 @@ using AnimalPassport.DataAccess.Interfaces;
 using AnimalPassport.Entities.Entities;
 using AutoMapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalPassport.BusinessLogic.Managers
 {
@@ -14,6 +16,7 @@ namespace AnimalPassport.BusinessLogic.Managers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
         public UserManager(IUnitOfWork unitOfWork, IMapper mapper)
@@ -21,11 +24,14 @@ namespace AnimalPassport.BusinessLogic.Managers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userRepository = unitOfWork.GetRepository<User>();
+            _roleRepository = unitOfWork.GetRepository<Role>();
         }
 
         public async Task<UserModel> GetAsync(string login, string password)
         {
-            var users = (await _userRepository.GetAsync(u => u.Email == login)).ToList();
+            var users = (await _userRepository.GetAsync(
+                u => u.Email == login, 
+                includeProperties: source => source.Include(s => s.Role))).ToList();
 
             if (!users.Any(u => CryptoProvider.VerifyHashedPassword(u.Password, password)))
             {
@@ -35,9 +41,18 @@ namespace AnimalPassport.BusinessLogic.Managers
             return _mapper.Map<UserModel>(users.SingleOrDefault(u => CryptoProvider.VerifyHashedPassword(u.Password, password)));
         }
 
+        public async Task<IEnumerable<RoleDto>> GetRolesAsync()
+        {
+            var roles = await _roleRepository.GetAllAsync();
+
+            return _mapper.Map<List<RoleDto>>(roles);
+        }
+
         public async Task RegisterAsync(RegisterModel model)
         {
             var user = _mapper.Map<User>(model);
+
+            user.RoleId = new Guid(model.Role);
 
             _userRepository.Create(user);
            

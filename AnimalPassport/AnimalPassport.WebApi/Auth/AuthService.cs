@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AnimalPassport.BusinessLogic.DataTransferObjects;
 using AnimalPassport.BusinessLogic.Interfaces;
 using AnimalPassport.WebApi.Models;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AnimalPassport.WebApi.Auth
@@ -22,7 +21,7 @@ namespace AnimalPassport.WebApi.Auth
 
         public async Task<UserModel> Authenticate(AuthModel model)
         {
-            var user = await _userManager.GetAsync(model.UserName, model.Password);
+            var user = await _userManager.GetAsync(model.Email, model.Password);
 
             if (user == null)
                 return null;
@@ -31,9 +30,10 @@ namespace AnimalPassport.WebApi.Auth
             var key = Encoding.ASCII.GetBytes("SFSAFFSAFASF424235rewjtsdguxcyvgfdgreugyfd78v6fdgydvydwad7wetfy");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

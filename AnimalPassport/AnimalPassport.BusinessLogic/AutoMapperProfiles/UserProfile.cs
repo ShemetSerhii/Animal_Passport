@@ -10,9 +10,13 @@ namespace AnimalPassport.BusinessLogic.AutoMapperProfiles
         public UserProfile()
         {
             CreateMap<RegisterModel, User>()
-                .ForMember(x => x.Password, opt => opt.MapFrom(src => CryptoProvider.HashPassword(src.Password)));
+                .ForMember(x => x.Password, opt => opt.MapFrom(src => CryptoProvider.HashPassword(src.Password)))
+                .ForMember(x => x.Role, opt => opt.Ignore());
 
-            CreateMap<User, UserModel>();
+            CreateMap<User, UserModel>()
+                .ForMember(x => x.Role, opt => opt.MapFrom(src => src.Role.Name));
+
+            CreateMap<Role, RoleDto>();
         }
     }
 }

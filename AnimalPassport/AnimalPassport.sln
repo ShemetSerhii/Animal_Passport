@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalPassport.BusinessLogi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalPassport.WebApi", "AnimalPassport.WebApi\AnimalPassport.WebApi.csproj", "{36601711-FC5F-4F03-B25F-F113806E75D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalPassport.DataAccess.Blob", "AnimalPassport.DataAccess.Blob\AnimalPassport.DataAccess.Blob.csproj", "{81AFD5C2-4FB3-44AB-A893-569B85F2C4DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnimalPassport.DataAccess.Blob", "AnimalPassport.DataAccess.Blob\AnimalPassport.DataAccess.Blob.csproj", "{81AFD5C2-4FB3-44AB-A893-569B85F2C4DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalPassport.SmartReader", "AnimalPassport.SmartReader\AnimalPassport.SmartReader.csproj", "{882DE386-0ACC-4179-89C7-4D1B5E199C53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{81AFD5C2-4FB3-44AB-A893-569B85F2C4DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81AFD5C2-4FB3-44AB-A893-569B85F2C4DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81AFD5C2-4FB3-44AB-A893-569B85F2C4DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{882DE386-0ACC-4179-89C7-4D1B5E199C53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{882DE386-0ACC-4179-89C7-4D1B5E199C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{882DE386-0ACC-4179-89C7-4D1B5E199C53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{882DE386-0ACC-4179-89C7-4D1B5E199C53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
