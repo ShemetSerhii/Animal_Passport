@@ -2,6 +2,7 @@
 using AnimalPassport.BusinessLogic.DataTransferObjects.Animal;
 using AnimalPassport.Entities.Entities;
 using AutoMapper;
+using System;
 
 namespace AnimalPassport.BusinessLogic.AutoMapperProfiles
 {
@@ -16,7 +17,8 @@ namespace AnimalPassport.BusinessLogic.AutoMapperProfiles
 
             CreateMap<MedicalOperation, MedicalOperationDto>();
 
-            CreateMap<MedicalRowDto, MedicalOperation>();
+            CreateMap<MedicalRowDto, MedicalOperation>()
+                .ForMember(x => x.DateExpiry, opt => opt.Ignore());
 
             CreateMap<Attachment, AttachmentDto>();
         }

@@ -8,8 +8,10 @@ namespace AnimalPassport.BusinessLogic.Interfaces
     {
         Task<UserModel> GetAsync(string login, string password);
 
-        Task RegisterAsync(RegisterModel model);
+        Task<UserModel> RegisterAsync(RegisterModel model);
 
         Task<IEnumerable<RoleDto>> GetRolesAsync();
+
+        Task<IEnumerable<UserInfo>> GetPetOwners();
     }
 }

@@ -11,7 +11,7 @@ namespace AnimalPassport.BusinessLogic.DataTransferObjects
 
         public DateTime Date { get; set; }
 
-        public DateTime DateExpiry { get; set; }
+        public DateTime? DateExpiry { get; set; }
 
         public IEnumerable<AttachmentDto> Attachments { get; set; }
     }

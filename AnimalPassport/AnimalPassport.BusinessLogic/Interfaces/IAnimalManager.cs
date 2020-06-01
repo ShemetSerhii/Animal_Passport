@@ -16,6 +16,8 @@ namespace AnimalPassport.BusinessLogic.Interfaces
 
         Task UpdateAnimalAsync(Guid animalId, AnimalCreate animal);
 
+        Task DeleteAnimalAsync(Guid animalId);
+
         Task AddAnimalPictureAsync(Guid animalId, FileDto picture);
     }
 }

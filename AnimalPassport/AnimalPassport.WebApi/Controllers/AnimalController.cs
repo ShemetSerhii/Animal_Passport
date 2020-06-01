@@ -51,6 +51,14 @@ namespace AnimalPassport.WebApi.Controllers
             return Ok();
         }
 
+        [HttpDelete("{animalId}")]
+        public async Task<IActionResult> DeleteAnimal(Guid animalId)
+        {
+            await _animalManager.DeleteAnimalAsync(animalId);
+
+            return Ok();
+        }
+
         [HttpPost("{animalId}/picture")]
         public async Task<IActionResult> AddAnimalPicture(Guid animalId, [FromForm] PictureModel file)
         {

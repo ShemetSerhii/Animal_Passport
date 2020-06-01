@@ -41,5 +41,13 @@ namespace AnimalPassport.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpDelete("{medRowId}")]
+        public async Task<IActionResult> DeleteMedicalRow(Guid medRowId)
+        {
+            await _medicalCardManager.DeleteMedicalRowAsync(medRowId);
+
+            return Ok();
+        }
     }
 }

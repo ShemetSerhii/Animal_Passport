@@ -41,6 +41,14 @@ namespace AnimalPassport.BusinessLogic.Managers
             return _mapper.Map<UserModel>(users.SingleOrDefault(u => CryptoProvider.VerifyHashedPassword(u.Password, password)));
         }
 
+        public async Task<IEnumerable<UserInfo>> GetPetOwners()
+        {
+            var users = await _userRepository.GetAsync(u => u.Role.Name == "Власник домашньої тварини",
+                includeProperties: source => source.Include(u => u.Role));
+
+            return _mapper.Map<List<UserInfo>>(users);
+        }
+
         public async Task<IEnumerable<RoleDto>> GetRolesAsync()
         {
             var roles = await _roleRepository.GetAllAsync();
@@ -48,15 +56,19 @@ namespace AnimalPassport.BusinessLogic.Managers
             return _mapper.Map<List<RoleDto>>(roles);
         }
 
-        public async Task RegisterAsync(RegisterModel model)
+        public async Task<UserModel> RegisterAsync(RegisterModel model)
         {
             var user = _mapper.Map<User>(model);
 
             user.RoleId = new Guid(model.Role);
 
-            _userRepository.Create(user);
+            var id = _userRepository.Create(user);
            
             await _unitOfWork.SaveChangesAsync();
+
+            var u = await _userRepository.GetAsync(id, source => source.Include(u => u.Role));
+
+            return _mapper.Map<UserModel>(u);
         }
     }
 }

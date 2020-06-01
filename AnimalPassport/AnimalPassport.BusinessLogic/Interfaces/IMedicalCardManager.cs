@@ -12,5 +12,7 @@ namespace AnimalPassport.BusinessLogic.Interfaces
         Task<Guid> AddMedicalCardRowAsync(Guid animalId, MedicalRowDto medicalRow);
 
         Task UpdateMedicalCardRowAsync(Guid medicalCardId, MedicalRowDto medicalRow);
+
+        Task DeleteMedicalRowAsync(Guid medicalRowId);
     }
 }

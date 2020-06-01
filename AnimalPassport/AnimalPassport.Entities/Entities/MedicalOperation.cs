@@ -13,7 +13,7 @@ namespace AnimalPassport.Entities.Entities
 
         public DateTime Date { get; set; }
 
-        public DateTime DateExpiry { get; set; }
+        public DateTime? DateExpiry { get; set; }
 
         public IEnumerable<Attachment> Attachments { get; set; }
     }

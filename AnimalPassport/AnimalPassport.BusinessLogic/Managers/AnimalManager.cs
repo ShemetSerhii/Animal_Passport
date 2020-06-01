@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalPassport.BusinessLogic.Managers
 {
@@ -18,18 +19,25 @@ namespace AnimalPassport.BusinessLogic.Managers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Animal> _animalRepository;
+        private readonly IRepository<MedicalOperation> _medicalOperationRepository;
+        private readonly IRepository<Attachment> _attachmentRepository;
         private readonly IMapper _mapper;
         private readonly IPictureBlobManager _pictureBlobManager;
+        private readonly IAttachmentBlobManager _attachmentBlobManager;
 
         public AnimalManager(
             IUnitOfWork unitOfWork, 
             IMapper mapper, 
-            IPictureBlobManager pictureBlobManager)
+            IPictureBlobManager pictureBlobManager,
+            IAttachmentBlobManager attachmentBlobManager)
         {
             _unitOfWork = unitOfWork;
             _animalRepository = unitOfWork.GetRepository<Animal>();
+            _medicalOperationRepository = unitOfWork.GetRepository<MedicalOperation>();
+            _attachmentRepository = unitOfWork.GetRepository<Attachment>();
             _mapper = mapper;
             _pictureBlobManager = pictureBlobManager;
+            _attachmentBlobManager = attachmentBlobManager;
         }
 
         public async Task<AnimalInfo> GetAnimalAsync(Guid animalId)
@@ -82,6 +90,33 @@ namespace AnimalPassport.BusinessLogic.Managers
             _mapper.Map(animalDto, animal);
 
             _animalRepository.Update(animal);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteAnimalAsync(Guid animalId)
+        {
+            var animal = await _animalRepository.GetAsync(animalId,
+                source => source
+                    .Include(s => s.MedicalOperations)
+                    .ThenInclude(m => m.Attachments));
+
+            foreach (var medRow in animal.MedicalOperations)
+            {
+                foreach (var attachment in medRow.Attachments)
+                {
+                    if (!string.IsNullOrEmpty(attachment.FilePath))
+                    {
+                        await _attachmentBlobManager.DeleteFileAsync(attachment.FilePath);
+                    }
+
+                    _attachmentRepository.Delete(attachment);
+                }
+
+                _medicalOperationRepository.Delete(medRow);
+            }
+
+            _animalRepository.Delete(animal);
 
             await _unitOfWork.SaveChangesAsync();
         }

@@ -19,13 +19,27 @@ namespace AnimalPassport.WebApi.Auth
             _userManager = userManager;
         }
 
-        public async Task<UserModel> Authenticate(AuthModel model)
+        public async Task<UserModel> AuthenticateAsync(AuthModel model)
         {
             var user = await _userManager.GetAsync(model.Email, model.Password);
 
             if (user == null)
                 return null;
 
+            SetUpToken(user);
+
+            return user;
+        }
+
+        public UserModel Authenticate(UserModel model)
+        {
+            SetUpToken(model);
+
+            return model;
+        }
+
+        private void SetUpToken(UserModel user)
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("SFSAFFSAFASF424235rewjtsdguxcyvgfdgreugyfd78v6fdgydvydwad7wetfy");
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -40,8 +54,6 @@ namespace AnimalPassport.WebApi.Auth
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-
-            return user;
         }
     }
 }

@@ -6,6 +6,8 @@ namespace AnimalPassport.WebApi.Auth
 {
     public interface IAuthService
     {
-        Task<UserModel> Authenticate(AuthModel model);
+        Task<UserModel> AuthenticateAsync(AuthModel model);
+
+        UserModel Authenticate(UserModel model);
     }
 }

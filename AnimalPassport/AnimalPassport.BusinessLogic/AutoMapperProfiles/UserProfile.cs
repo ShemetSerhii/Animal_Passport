@@ -16,6 +16,8 @@ namespace AnimalPassport.BusinessLogic.AutoMapperProfiles
             CreateMap<User, UserModel>()
                 .ForMember(x => x.Role, opt => opt.MapFrom(src => src.Role.Name));
 
+            CreateMap<User, UserInfo>();
+
             CreateMap<Role, RoleDto>();
         }
     }
